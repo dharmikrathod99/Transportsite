@@ -13,7 +13,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const res = axios.post("https://transportsitebackend.onrender.com//api/auth/login", {
+            const res = axios.post("https://transportsitebackend.onrender.com/api/auth/login", {
                 email,
                 password,
             });
