@@ -32,7 +32,7 @@ const Home = () => {
                             </p>
                             <div className="all-btn d-flex gap-2">
                                 <button className="btn btn-warning btn-lg mt-3 mb-3">
-                                    view vehical
+                                    <Link to='/register' className="text-decoration-none">Ragistar</Link>
                                 </button>
                                 <button className="btn btn-warning btn-lg mt-3 mb-3 ">
                                     <Link to='/admin' className="text-decoration-none">Admin</Link>
