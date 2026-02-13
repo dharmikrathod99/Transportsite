@@ -1,8 +1,7 @@
 import "./DashboardLayout.css";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
 
 const DashboardLayout = () => {
     const [users, setUsers] = useState([]);
@@ -20,10 +19,12 @@ const DashboardLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
+    const BASE_URL = "https://transportsitebackend.onrender.com";
+
     // ✅ FETCH USERS
     const fetchUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/userdata");
+            const res = await axios.get(`${BASE_URL}/api/admin/users`);
             setUsers(res.data);
         } catch (err) {
             console.error("Fetch Error:", err);
@@ -43,15 +44,9 @@ const DashboardLayout = () => {
             [name]: value
         };
 
-        // ✅ Only auto calculate when gokm or comekm changes
         if (name === "gokm" || name === "comekm") {
-            const go = parseFloat(
-                name === "gokm" ? value : formData.gokm
-            );
-
-            const come = parseFloat(
-                name === "comekm" ? value : formData.comekm
-            );
+            const go = parseFloat(name === "gokm" ? value : formData.gokm);
+            const come = parseFloat(name === "comekm" ? value : formData.comekm);
 
             if (!isNaN(go) && !isNaN(come)) {
                 updatedForm.totlekm = come - go;
@@ -61,9 +56,6 @@ const DashboardLayout = () => {
         setFormData(updatedForm);
     };
 
-
-
-
     // ✅ HANDLE SUBMIT
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -71,13 +63,13 @@ const DashboardLayout = () => {
         try {
             if (editId) {
                 await axios.put(
-                    `http://localhost:5000/api/userdata/${editId}`,
+                    `${BASE_URL}/api/userdata/${editId}`,
                     formData
                 );
                 setEditId(null);
             } else {
                 await axios.post(
-                    "http://localhost:5000/api/userdata",
+                    `${BASE_URL}/api/userdata`,
                     formData
                 );
             }
@@ -92,6 +84,7 @@ const DashboardLayout = () => {
                 weight: "",
                 rent: ""
             });
+
             fetchUsers();
 
         } catch (err) {
@@ -117,9 +110,7 @@ const DashboardLayout = () => {
     // ✅ HANDLE DELETE
     const handleDelete = async (id) => {
         try {
-            await axios.delete(
-                `http://localhost:5000/api/userdata/${id}`
-            );
+            await axios.delete(`${BASE_URL}/api/userdata/${id}`);
             fetchUsers();
         } catch (err) {
             console.error("Delete Error:", err);
@@ -138,13 +129,9 @@ const DashboardLayout = () => {
         navigate("/login");
     };
 
-
-
-
     return (
         <div className="dashboard-container">
 
-            {/* Navbar */}
             <nav className="dashboard-navbar">
                 <button className="toggle-btn" onClick={toggleSidebar}>
                     ☰
@@ -152,7 +139,6 @@ const DashboardLayout = () => {
                 <h4 className="brand">🚍 TranspoX Admin</h4>
             </nav>
 
-            {/* Sidebar */}
             <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
                 <ul>
                     <button className="cst-btn" onClick={toggleSidebar}>
@@ -167,92 +153,39 @@ const DashboardLayout = () => {
                 </ul>
             </div>
 
-            {/* Main Content */}
             <div className="main-content">
                 <h2>Dashboard Overview</h2>
 
                 <div className="crud-container">
                     <h2>User Management</h2>
 
-                    {/* FORM */}
                     <form onSubmit={handleSubmit} className="crud-form">
-                        <input
-                            type="number"
-                            name="uid"
-                            placeholder="ક્રમ"
-                            value={formData.uid}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="date"
-                            name="date"
-                            placeholder="તારીખ"
-                            value={formData.date}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="gokm"
-                            placeholder="જવાના km"
-                            value={formData.gokm}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="comekm"
-                            placeholder="આવવાના km"
-                            value={formData.comekm}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="totlekm"
-                            placeholder="કુલ km"
-                            value={formData.totlekm}
-                            onChange={handleChange}
-                        />
-
-                        <input
-                            type="text"
-                            name="city"
-                            placeholder="ગામ"
-                            value={formData.city}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="weight"
-                            placeholder="મણ"
-                            value={formData.weight}
-                            onChange={handleChange}
-                        />
-                        <input
-                            type="text"
-                            name="rent"
-                            placeholder="ભાડું"
-                            value={formData.rent}
-                            onChange={handleChange}
-
-                        />
+                        <input type="number" name="uid" placeholder="ક્રમ" value={formData.uid} onChange={handleChange} />
+                        <input type="date" name="date" value={formData.date} onChange={handleChange} />
+                        <input type="text" name="gokm" placeholder="જવાના km" value={formData.gokm} onChange={handleChange} />
+                        <input type="text" name="comekm" placeholder="આવવાના km" value={formData.comekm} onChange={handleChange} />
+                        <input type="text" name="totlekm" placeholder="કુલ km" value={formData.totlekm} onChange={handleChange} />
+                        <input type="text" name="city" placeholder="ગામ" value={formData.city} onChange={handleChange} />
+                        <input type="text" name="weight" placeholder="મણ" value={formData.weight} onChange={handleChange} />
+                        <input type="text" name="rent" placeholder="ભાડું" value={formData.rent} onChange={handleChange} />
                         <button type="submit">
                             {editId ? "Update User" : "Add User"}
                         </button>
                     </form>
 
-                    {/* TABLE */}
                     <div className="table-responsive">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ક્રમ </th>
-                                    <th>તારીખ </th>
+                                    <th>ક્રમ</th>
+                                    <th>તારીખ</th>
                                     <th>જવાના km</th>
                                     <th>આવવાના km</th>
-                                    <th>કુલ km </th>
-                                    <th>ગામ  </th>
+                                    <th>કુલ km</th>
+                                    <th>ગામ</th>
                                     <th>મણ</th>
-                                    <th>ભાડું </th>
-                                    <th>action </th>
+                                    <th>ભાડું</th>
+                                    <th>action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -267,15 +200,8 @@ const DashboardLayout = () => {
                                         <td>{user.weight}</td>
                                         <td>{user.rent}</td>
                                         <td>
-                                            <button onClick={() => handleEdit(user)}>
-                                                Edit
-                                            </button>
-                                            <button
-                                                className="delete-btn"
-                                                onClick={() => handleDelete(user._id)}
-                                            >
-                                                Delete
-                                            </button>
+                                            <button onClick={() => handleEdit(user)}>Edit</button>
+                                            <button className="delete-btn" onClick={() => handleDelete(user._id)}>Delete</button>
                                         </td>
                                     </tr>
                                 ))}
