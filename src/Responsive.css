@@ -1,0 +1,15 @@
+.navbar-toggler {
+    border: none;
+    font-size: 22px;
+}
+
+.dropdown-menu-custom {
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: #fff;
+    min-width: 200px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}

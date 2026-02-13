@@ -1,0 +1,60 @@
+/* Background */
+.register-container {
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    perspective: 1000px;
+}
+
+/* 3D Glass Card */
+.register-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+}
+
+/* 3D Hover */
+.register-card:hover {
+    transform: rotateY(-10deg) rotateX(5deg);
+}
+
+/* Inputs */
+.custom-input {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+}
+
+.custom-input:focus {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: none;
+    border: 1px solid #fff;
+    color: white;
+}
+
+/* Button */
+.register-btn {
+    border-radius: 30px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.register-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Link */
+.login-link {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.login-link:hover {
+    color: #ffd700;
+}

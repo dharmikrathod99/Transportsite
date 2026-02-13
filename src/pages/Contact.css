@@ -1,0 +1,303 @@
+/* ================================
+   RESET & BASE
+================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.contact-page {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ================================
+   SKY & CLOUDS
+================================ */
+.sky {
+    width: 100%;
+    height: 50vh;
+    background: linear-gradient(to bottom, #87ceeb, #b0e0e6);
+    position: relative;
+    overflow: hidden;
+}
+
+.sun {
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    width: 80px;
+    height: 80px;
+    background: #ffd700;
+    border-radius: 50%;
+    animation: sunMove 10s linear infinite alternate;
+}
+
+@keyframes sunMove {
+    0% {
+        top: 5%;
+        right: 10%;
+    }
+
+    100% {
+        top: 15%;
+        right: 12%;
+    }
+}
+
+.cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: cloudMove 60s linear infinite;
+}
+
+.cloud1 {
+    width: 120px;
+    height: 60px;
+    top: 20px;
+    left: -150px;
+}
+
+.cloud2 {
+    width: 100px;
+    height: 50px;
+    top: 60px;
+    left: -200px;
+    animation-duration: 80s;
+}
+
+.cloud3 {
+    width: 150px;
+    height: 70px;
+    top: 10px;
+    left: -250px;
+    animation-duration: 100s;
+}
+
+@keyframes cloudMove {
+    0% {
+        left: -200px;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* ================================
+   ROAD & TRUCKS
+================================ */
+.road {
+    width: 100%;
+    height: 200px;
+    background: #555;
+    position: relative;
+    overflow: hidden;
+}
+
+.road::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 4px;
+    background: white;
+    transform: translateY(-50%);
+    animation: roadMove 1s linear infinite;
+}
+
+@keyframes roadMove {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+.truck {
+    position: absolute;
+    bottom: 20px;
+    width: 120px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    animation: truckMove 10s linear infinite;
+}
+
+.truck-red {
+    background-color: transparent;
+    left: -150px;
+}
+
+.truck-blue {
+    background-color: transparent;
+    left: -300px;
+    animation-duration: 12s;
+}
+
+.truck-body {
+    width: 100px;
+    height: 50px;
+    background: red;
+    border-radius: 10px;
+    position: relative;
+}
+
+.truck-blue .truck-body {
+    background: #007bff;
+}
+
+.truck-wheel {
+    width: 20px;
+    height: 20px;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -10px;
+}
+
+.wheel1 {
+    left: 10px;
+}
+
+.wheel2 {
+    right: 10px;
+}
+
+@keyframes truckMove {
+    0% {
+        left: -150px;
+    }
+
+    100% {
+        left: 110%;
+    }
+}
+
+/* ================================
+   CONTACT FORM
+================================ */
+.contact-form-container {
+    width: 90%;
+    max-width: 500px;
+    background: #ffffff94;
+    padding: 30px;
+    margin: -100px auto 50px auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 27%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.contact-form-container h1 {
+    color: #1e90ff;
+    margin-bottom: 10px;
+}
+
+.contact-form-container p {
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #555;
+}
+
+.contact-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-form-container input,
+.contact-form-container textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.contact-form-container button {
+    padding: 12px;
+    background: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.contact-form-container button:hover {
+    background: #0d6efd;
+}
+
+.contact-info {
+    margin-top: 20px;
+    text-align: left;
+    color: #333;
+}
+
+.contact-info p {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+/* ================================
+   ANIMATIONS
+================================ */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+    .truck {
+        width: 80px;
+        height: 40px;
+    }
+
+    .truck-body {
+        width: 70px;
+        height: 35px;
+    }
+
+    .contact-form-container {
+        margin: -80px auto 30px auto;
+        padding: 20px;
+        top:37%;
+        left: 5%;
+    }
+
+    .road {
+        height: 150px;
+    }
+    
+}
+
+
+/* custom  */
+.background{
+    position: relative;
+}

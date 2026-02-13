@@ -1,0 +1,53 @@
+/* Wrapper */
+.dashboard-wrapper {
+    width: 100%;
+}
+
+/* Top Welcome Section */
+.dashboard-hero {
+    min-height: 50vh;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    padding-top: 100px;
+    /* space for fixed navbar */
+    padding-bottom: 50px;
+}
+
+/* Glass Welcome Card */
+.welcome-card {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transition: transform 0.4s ease;
+}
+
+.welcome-card:hover {
+    transform: translateY(-8px) scale(1.02);
+}
+
+/* Logout Button */
+.logout-btn {
+    border-radius: 30px;
+    padding: 8px 25px;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.logout-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-hero {
+        padding-top: 120px;
+    }
+
+    .welcome-card {
+        margin: 0 20px;
+    }
+}

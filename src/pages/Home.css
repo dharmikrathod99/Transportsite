@@ -1,0 +1,47 @@
+/* HERO */
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+.hero-img {
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    transition: transform 0.5s ease;
+}
+
+.hero-img:hover {
+    transform: rotateY(10deg) scale(1.05);
+}
+
+/* SERVICES */
+.services {
+    background: #f8f9fa;
+}
+
+.service-card {
+    border-radius: 20px;
+    transition: all 0.4s ease;
+}
+
+.service-card:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    transform: translateY(-10px);
+}
+
+/* STATS */
+.stats {
+    background:
+        linear-gradient(135deg, rgba(30, 60, 114, 0.85), rgba(42, 82, 152, 0.85)),
+        url("../assets//truck-bg-img.avif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* CTA */
+.cta {
+    background: #f1f1f1;
+}
