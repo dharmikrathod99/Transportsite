@@ -13,10 +13,13 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const res = axios.post("https://transportsitebackend.onrender.com/api/auth/login", {
-                email,
-                password,
-            });
+            const res = await axios.post(
+                "https://transportsitebackend.onrender.com/api/auth/login",
+                {
+                    email,
+                    password
+                }
+            );
 
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.user));
@@ -28,9 +31,11 @@ const Login = () => {
             }
 
         } catch (err) {
-            alert("Invalid login");
+            console.log(err);
+            alert("Invalid email or password");
         }
     };
+
 
     return (
         <>
