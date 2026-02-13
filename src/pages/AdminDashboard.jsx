@@ -1,8 +1,8 @@
-// DashboardLayout.jsx
+// src/pages/DashboardLayout.jsx
 import "./DashboardLayout.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "../api/axios"; // ✅ use your configured axios instance
+import axios from "axios";
 
 const DashboardLayout = () => {
     const [users, setUsers] = useState([]);
@@ -14,16 +14,24 @@ const DashboardLayout = () => {
         totlekm: "",
         city: "",
         weight: "",
-        rent: ""
+        rent: "",
     });
     const [editId, setEditId] = useState(null);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
-    // ✅ FETCH USERS
+    const BASE_URL = "https://transportsitebackend.onrender.com";
+
+    // =========================
+    // FETCH USERS FROM BACKEND
+    // =========================
     const fetchUsers = async () => {
         try {
-            const res = await axios.get("/admin/users"); // token automatically added
+            const token = localStorage.getItem("token");
+            const res = await axios.get(`${BASE_URL}/api/userdata`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
             setUsers(res.data);
         } catch (err) {
             console.error("Fetch Error:", err);
@@ -34,7 +42,9 @@ const DashboardLayout = () => {
         fetchUsers();
     }, []);
 
-    // ✅ HANDLE INPUT CHANGE
+    // =========================
+    // HANDLE FORM INPUT
+    // =========================
     const handleChange = (e) => {
         const { name, value } = e.target;
         let updatedForm = { ...formData, [name]: value };
@@ -42,6 +52,7 @@ const DashboardLayout = () => {
         if (name === "gokm" || name === "comekm") {
             const go = parseFloat(name === "gokm" ? value : formData.gokm);
             const come = parseFloat(name === "comekm" ? value : formData.comekm);
+
             if (!isNaN(go) && !isNaN(come)) {
                 updatedForm.totlekm = come - go;
             }
@@ -50,15 +61,23 @@ const DashboardLayout = () => {
         setFormData(updatedForm);
     };
 
-    // ✅ HANDLE SUBMIT
+    // =========================
+    // HANDLE SUBMIT
+    // =========================
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const token = localStorage.getItem("token");
+
             if (editId) {
-                await axios.put(`/userdata/${editId}`, formData); // token added automatically
+                await axios.put(`${BASE_URL}/api/userdata/${editId}`, formData, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
                 setEditId(null);
             } else {
-                await axios.post("/userdata", formData); // token added automatically
+                await axios.post(`${BASE_URL}/api/userdata`, formData, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
             }
 
             setFormData({
@@ -69,7 +88,7 @@ const DashboardLayout = () => {
                 totlekm: "",
                 city: "",
                 weight: "",
-                rent: ""
+                rent: "",
             });
 
             fetchUsers();
@@ -78,7 +97,9 @@ const DashboardLayout = () => {
         }
     };
 
-    // ✅ HANDLE EDIT
+    // =========================
+    // HANDLE EDIT
+    // =========================
     const handleEdit = (user) => {
         setFormData({
             uid: user.uid,
@@ -88,25 +109,34 @@ const DashboardLayout = () => {
             totlekm: user.totlekm,
             city: user.city,
             weight: user.weight,
-            rent: user.rent
+            rent: user.rent,
         });
         setEditId(user._id);
     };
 
-    // ✅ HANDLE DELETE
+    // =========================
+    // HANDLE DELETE
+    // =========================
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`/userdata/${id}`); // token added automatically
+            const token = localStorage.getItem("token");
+            await axios.delete(`${BASE_URL}/api/userdata/${id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
             fetchUsers();
         } catch (err) {
             console.error("Delete Error:", err);
         }
     };
 
-    // ✅ SIDEBAR TOGGLE
+    // =========================
+    // SIDEBAR TOGGLE
+    // =========================
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-    // ✅ LOGOUT
+    // =========================
+    // LOGOUT
+    // =========================
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -115,26 +145,37 @@ const DashboardLayout = () => {
 
     return (
         <div className="dashboard-container">
-
+            {/* Navbar */}
             <nav className="dashboard-navbar">
-                <button className="toggle-btn" onClick={toggleSidebar}>☰</button>
+                <button className="toggle-btn" onClick={toggleSidebar}>
+                    ☰
+                </button>
                 <h4 className="brand">🚍 TranspoX Admin</h4>
             </nav>
 
+            {/* Sidebar */}
             <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
                 <ul>
-                    <button className="cst-btn" onClick={toggleSidebar}>Dashboard</button>
-                    <Link className="nav-link" to="/">Home</Link>
-                    <li onClick={handleLogout} className="logout">Logout</li>
+                    <button className="cst-btn" onClick={toggleSidebar}>
+                        Dashboard
+                    </button>
+                    <Link className="nav-link" to="/">
+                        Home
+                    </Link>
+                    <li onClick={handleLogout} className="logout">
+                        Logout
+                    </li>
                 </ul>
             </div>
 
+            {/* Main Content */}
             <div className="main-content">
                 <h2>Dashboard Overview</h2>
 
                 <div className="crud-container">
                     <h2>User Management</h2>
 
+                    {/* FORM */}
                     <form onSubmit={handleSubmit} className="crud-form">
                         <input type="number" name="uid" placeholder="ક્રમ" value={formData.uid} onChange={handleChange} />
                         <input type="date" name="date" value={formData.date} onChange={handleChange} />
@@ -147,6 +188,7 @@ const DashboardLayout = () => {
                         <button type="submit">{editId ? "Update User" : "Add User"}</button>
                     </form>
 
+                    {/* TABLE */}
                     <div className="table-responsive">
                         <table>
                             <thead>
@@ -182,6 +224,7 @@ const DashboardLayout = () => {
                             </tbody>
                         </table>
                     </div>
+
                 </div>
             </div>
         </div>
