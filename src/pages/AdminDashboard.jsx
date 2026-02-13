@@ -1,7 +1,8 @@
+// DashboardLayout.jsx
 import "./DashboardLayout.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios"; // ✅ use your configured axios instance
 
 const DashboardLayout = () => {
     const [users, setUsers] = useState([]);
@@ -19,12 +20,10 @@ const DashboardLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
 
-    const BASE_URL = "https://transportsitebackend.onrender.com";
-
     // ✅ FETCH USERS
     const fetchUsers = async () => {
         try {
-            const res = await axios.get(`${BASE_URL}/api/admin/users`);
+            const res = await axios.get("/admin/users"); // token automatically added
             setUsers(res.data);
         } catch (err) {
             console.error("Fetch Error:", err);
@@ -38,16 +37,11 @@ const DashboardLayout = () => {
     // ✅ HANDLE INPUT CHANGE
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        let updatedForm = {
-            ...formData,
-            [name]: value
-        };
+        let updatedForm = { ...formData, [name]: value };
 
         if (name === "gokm" || name === "comekm") {
             const go = parseFloat(name === "gokm" ? value : formData.gokm);
             const come = parseFloat(name === "comekm" ? value : formData.comekm);
-
             if (!isNaN(go) && !isNaN(come)) {
                 updatedForm.totlekm = come - go;
             }
@@ -59,19 +53,12 @@ const DashboardLayout = () => {
     // ✅ HANDLE SUBMIT
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             if (editId) {
-                await axios.put(
-                    `${BASE_URL}/api/userdata/${editId}`,
-                    formData
-                );
+                await axios.put(`/userdata/${editId}`, formData); // token added automatically
                 setEditId(null);
             } else {
-                await axios.post(
-                    `${BASE_URL}/api/userdata`,
-                    formData
-                );
+                await axios.post("/userdata", formData); // token added automatically
             }
 
             setFormData({
@@ -86,7 +73,6 @@ const DashboardLayout = () => {
             });
 
             fetchUsers();
-
         } catch (err) {
             console.error("Submit Error:", err);
         }
@@ -110,7 +96,7 @@ const DashboardLayout = () => {
     // ✅ HANDLE DELETE
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${BASE_URL}/api/userdata/${id}`);
+            await axios.delete(`/userdata/${id}`); // token added automatically
             fetchUsers();
         } catch (err) {
             console.error("Delete Error:", err);
@@ -118,9 +104,7 @@ const DashboardLayout = () => {
     };
 
     // ✅ SIDEBAR TOGGLE
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
-    };
+    const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
     // ✅ LOGOUT
     const handleLogout = () => {
@@ -133,23 +117,15 @@ const DashboardLayout = () => {
         <div className="dashboard-container">
 
             <nav className="dashboard-navbar">
-                <button className="toggle-btn" onClick={toggleSidebar}>
-                    ☰
-                </button>
+                <button className="toggle-btn" onClick={toggleSidebar}>☰</button>
                 <h4 className="brand">🚍 TranspoX Admin</h4>
             </nav>
 
             <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
                 <ul>
-                    <button className="cst-btn" onClick={toggleSidebar}>
-                        Dashboard
-                    </button>
-                    <Link className="nav-link" to="/">
-                        Home
-                    </Link>
-                    <li onClick={handleLogout} className="logout">
-                        Logout
-                    </li>
+                    <button className="cst-btn" onClick={toggleSidebar}>Dashboard</button>
+                    <Link className="nav-link" to="/">Home</Link>
+                    <li onClick={handleLogout} className="logout">Logout</li>
                 </ul>
             </div>
 
@@ -168,9 +144,7 @@ const DashboardLayout = () => {
                         <input type="text" name="city" placeholder="ગામ" value={formData.city} onChange={handleChange} />
                         <input type="text" name="weight" placeholder="મણ" value={formData.weight} onChange={handleChange} />
                         <input type="text" name="rent" placeholder="ભાડું" value={formData.rent} onChange={handleChange} />
-                        <button type="submit">
-                            {editId ? "Update User" : "Add User"}
-                        </button>
+                        <button type="submit">{editId ? "Update User" : "Add User"}</button>
                     </form>
 
                     <div className="table-responsive">
@@ -208,7 +182,6 @@ const DashboardLayout = () => {
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
