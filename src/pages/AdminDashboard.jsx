@@ -49,12 +49,18 @@ const DashboardLayout = () => {
         const { name, value } = e.target;
         let updatedForm = { ...formData, [name]: value };
 
-        if (name === "gokm" || name === "comekm") {
-            const go = parseFloat(name === "gokm" ? value : formData.gokm);
-            const come = parseFloat(name === "comekm" ? value : formData.comekm);
+        // Calculate total km
+        const go = parseFloat(name === "gokm" ? value : formData.gokm);
+        const come = parseFloat(name === "comekm" ? value : formData.comekm);
 
-            if (!isNaN(go) && !isNaN(come)) {
-                updatedForm.totlekm = come - go;
+        if (!isNaN(go) && !isNaN(come)) {
+            const total = come - go;
+            updatedForm.totlekm = total;
+
+            // Calculate rent automatically
+            if (!isNaN(total)) {
+                const rentValue = ((total - 60) * 31) + 3500;
+                updatedForm.rent = rentValue > 0 ? rentValue : 3500;
             }
         }
 
